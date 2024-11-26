@@ -1,0 +1,13 @@
+# config.yaml
+data:
+  training_data_path: "data/raw/financial_regression.csv"
+  test_data_path: "data/raw/"        #Placeholder for testing data
+  output_dir: "data/saved_model/"
+
+model:
+  learning_rate: 0.01
+  num_iterations: 1000
+
+split:
+  test_size: 0.25
+  random_state: 42
