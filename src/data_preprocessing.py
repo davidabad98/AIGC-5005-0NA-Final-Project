@@ -43,3 +43,11 @@ class DataPreprocessor:
         if self.debug:
             print("Data loaded successfully with shape:", self.data.shape)
         return self.data
+    
+    def backfill(self, df:pd.DataFrame, columns_backfill: list = ['us_rates_%','CPI','GDP']) -> pd.DataFrame:
+        '''
+        This function is used to backfill the given columns in order to fill up.
+        ''' 
+        df[columns_backfill] = df[columns_backfill].fillna(method='bfill')
+        return df
+
