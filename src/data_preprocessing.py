@@ -51,3 +51,25 @@ class DataPreprocessor:
         df[columns_backfill] = df[columns_backfill].fillna(method='bfill')
         return df
 
+    def interpolate_backfill(self, df:pd.DataFrame, columns_to_interploate: list = ['us_rates_%','CPI','GDP','usd_chf','eur_usd']) -> pd.DataFrame:
+        '''
+        This function will interpolate with respect to time and backfill first rows becase
+        first columns do not interpolate as there are not values to start with
+        '''
+        #Converting date column from object to datetime
+        df['date']  = pd.to_datetime(df['date'])
+        # We need to set the date column to index for interpolation to work
+        df.set_index('date', inplace=True)
+        df[columns_to_interploate] = df[columns_to_interploate].interpolate(method='time')
+        df.reset_index(inplace=True)
+        # First few rows are filled up using backfill
+        df[columns_to_interploate] = df[columns_to_interploate].fillna(method='bfill')
+
+        return df
+    
+    def drop_null(self, df: pd.DataFrame, columns: list = ['date','gold close'] ):
+        '''
+        Here we will remove the rows where the date and target variable is missing
+        '''
+        df = df.dropna(subset=columns)
+        return df
