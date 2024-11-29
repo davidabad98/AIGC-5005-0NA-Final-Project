@@ -1,0 +1,22 @@
+1) Data Preprocessing
+
+2) Data Transformation:
+    - Scaling
+    - Further analysis on data (Darshil)
+
+3) Model Design and prototype development
+     - RNN (David)
+
+     - Transformers (Rizvan and Darshil)
+
+4) Literature Review
+     - Summarize 2 related works to provide context and justification for your approach. (David)
+     - Provide insights into potential challenges in data handling, such as missing values, class
+       imbalances, or scalability issues. (Rizvan and Darshil)
+
+
+5) Testing and Analysis  (Navpreet)
+      - Identify the key evaluation metrics
+      - See the results of our model 
+
+6) Final Report and presentation
