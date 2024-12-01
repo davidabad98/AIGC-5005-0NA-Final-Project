@@ -73,3 +73,21 @@ class DataPreprocessor:
         '''
         df = df.dropna(subset=columns)
         return df
+    
+    # This function checks for null values
+    def check_null(self,df:pd.DataFrame):
+        nulls = df.isnull().sum().sum()
+        if nulls > 0:
+            print('There are nulls in the dataset')
+        else:
+            print('No null values found')
+
+
+    # This function will run all the functions in the class
+    def preprocess(self):
+        df = self.load_data(self.file_path)
+        print('Data has been loaded')
+        df_inter = self.interpolate_backfill(df)
+        df_null = self.drop_null(df_inter)
+        self.check_null(df_null)
+        return df_null
