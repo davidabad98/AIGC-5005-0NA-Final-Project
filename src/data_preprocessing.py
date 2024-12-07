@@ -86,6 +86,7 @@ class DataPreprocessor:
     # This function will run all the functions in the class
     def preprocess(self):
         df = self.load_data(self.file_path)
+        df = df.sort_values('date')
         print('Data has been loaded')
         df_inter = self.interpolate_backfill(df)
         df_null = self.drop_null(df_inter)
