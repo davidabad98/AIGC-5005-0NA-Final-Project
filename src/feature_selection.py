@@ -4,10 +4,11 @@ import numpy as np
 import pandas as pd
 
 class FeatureSelectionWithRFE:
-    def __init__(self, X_train, y_train, X_test, n_features_to_select=10):
+    def __init__(self, X_train, y_train, X_test,y_test, n_features_to_select=10):
         self.X_train = X_train
         self.y_train = y_train
         self.X_test = X_test
+        self.y_test = y_test
         self.n_features_to_select = n_features_to_select
 
     def perform_feature_selection(self):
@@ -32,3 +33,9 @@ class FeatureSelectionWithRFE:
         X_test_selected = X_test_selected.to_numpy().reshape(X_test_selected.shape[0], X_test_selected.shape[1], 1)
         
         return X_train_selected, X_test_selected
+    
+    def convert_y_numpy(self):
+        y_train_converted = self.y_train.to_numpy() if isinstance(self.y_train, (pd.Series, pd.DataFrame)) else self.y_train
+        y_test_converted = self.y_test.to_numpy() if isinstance(self.y_test, (pd.Series, pd.DataFrame)) else self.y_test
+
+        return y_train_converted, y_test_converted
