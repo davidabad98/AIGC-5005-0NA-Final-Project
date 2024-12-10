@@ -81,7 +81,27 @@ class DataPreprocessor:
             print('There are nulls in the dataset')
         else:
             print('No null values found')
+            
+            
+    def date_transformation(self, df: pd.DataFrame) -> pd.DataFrame:
+        '''
+        RNNs require numerical or structured inputs. A raw datetime object or string cannot 
+        be directly interpreted.
+        The date column should be converted into numeric features or representations, 
+        such as elapsed time or cyclical features, which RNNs can understand.
+        '''
+        # This will be one of our columns. we are removing date but we will have number of days elapsed
+        # for each entry which will give us a idea of time spent.
+        df['days_since_start'] = (df['date']-df['date'].min()).dt.days
 
+        # Drop raw date column
+        df = df.drop(columns=['date'])
+
+        return df
+
+    def delete_columns(self, df: pd.DataFrame, delete_columns: list = ['gold open','gold high','gold low']) -> pd.DataFrame:
+        df = df.drop(columns=delete_columns)
+        return df
 
     # This function will run all the functions in the class
     def preprocess(self):
@@ -91,4 +111,6 @@ class DataPreprocessor:
         df_inter = self.interpolate_backfill(df)
         df_null = self.drop_null(df_inter)
         self.check_null(df_null)
-        return df_null
+        df_transformation = self.date_transformation(df_null)
+        del_df = self.delete_columns(df_transformation)
+        return df_transformation
