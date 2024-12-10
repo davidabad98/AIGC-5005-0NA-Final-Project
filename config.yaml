@@ -1,8 +1,8 @@
 # config.yaml
 data:
   training_data_path: "data/raw/financial_regression.csv"
-  test_data_path: "data/raw/"        #Placeholder for testing data
-  output_dir: "data/saved_model/"
+  test_data_path: "data/raw/financial_regression_test.csv"        #Placeholder for testing data
+  output_dir: "data/saved_model/trained_model.pkl"
 
 model:
   learning_rate: 0.001

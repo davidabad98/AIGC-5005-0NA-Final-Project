@@ -1,28 +1,38 @@
 import os
+import pickle
 import sys
 
 import yaml
+
 from scripts.data_pipeline import DataPipeline
 from src.model import GoldPricePredictionModel
 
-# Get the directory where main.py is located
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Load configuration
+config = None
+try:
+    with open("config.yaml", "r") as file:
+        config = yaml.safe_load(file)
+except FileNotFoundError:
+    print("Error: config.yaml file not found.")
+except yaml.YAMLError as e:
+    print(f"Error reading config.yaml: {e}")
 
-# Construct the path to the raw data file
-data_path = os.path.join(BASE_DIR, "data", "raw", "financial_regression.csv")
+# Check if config was loaded successfully
+if config is None:
+    print("Failed to load configuration. Please check config.yaml file.")
+    exit(1)
 
 # Initialize DataPipeline with test data
-data_pipeline = DataPipeline(file_path=data_path)
+data_pipeline = DataPipeline(file_path=config["data"]["training_data_path"])
 
 # Read Hyperparams
-learning_rate = 0.001
-num_epochs = 200
+learning_rate = config["model"]["learning_rate"]
+num_epochs = config["model"]["num_iterations"]
 
-# Preprocess and retrieve dataframe, independent (X) and dependent (y) variables
+# Preprocess and retrieve feature engineering object
 fe = data_pipeline.run()
 
 # Bringing in the algorithm
-# Assuming X_train_selected, X_test_selected, y_train_converted, y_test_converted are available
 model = GoldPricePredictionModel(
     fe.X_train_scaled,
     fe.X_test_scaled,
@@ -38,3 +48,8 @@ model.plot_loss()  # Plotting the training loss
 model.predict()  # Making predictions
 model.plot_actual_vs_predicted()  # Plotting actual vs predicted values
 model.evaluate_model()  # Evaluating model performance
+
+
+# Save the model
+with open(config["data"]["output_dir"], "wb") as f:
+    pickle.dump(model, f)
