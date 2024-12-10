@@ -34,6 +34,18 @@ class FeatureSelectionWithRFE:
         
         return X_train_selected, X_test_selected
     
+    def manual_feature_selection(self):
+        selected_column = ['oil close','nasdaq high','CPI','GDP','silver low','days_since_start','us_rates_%','palladium high','oil high','nasdaq open','month_sin','month_cos']
+
+        X_train_selected = self.X_train[selected_column]
+        X_test_selected = self.X_test[selected_column]
+
+        # Converting to numpy array from pandas dataframe
+        X_train_selected = X_train_selected.to_numpy().reshape(X_train_selected.shape[0], X_train_selected.shape[1], 1)
+        X_test_selected = X_test_selected.to_numpy().reshape(X_test_selected.shape[0], X_test_selected.shape[1], 1)
+        
+        return X_train_selected, X_test_selected
+    
     def convert_y_numpy(self):
         y_train_converted = self.y_train.to_numpy() if isinstance(self.y_train, (pd.Series, pd.DataFrame)) else self.y_train
         y_test_converted = self.y_test.to_numpy() if isinstance(self.y_test, (pd.Series, pd.DataFrame)) else self.y_test
