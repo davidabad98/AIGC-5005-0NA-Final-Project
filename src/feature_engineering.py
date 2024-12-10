@@ -2,8 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 from src.shared_functions import save_dataframe_to_csv
 
@@ -16,21 +15,11 @@ class FeatureEngineering:
         self.y_test = y_test
         self.scaler_x = MinMaxScaler(feature_range=(0, 1))
         self.scaler_y = MinMaxScaler(feature_range=(0, 1))
-    
+
     def scale_data(self):
         """Scales the input features and target variable."""
         self.X_train_scaled = self.scaler_x.fit_transform(self.X_train.values)
         self.X_test_scaled = self.scaler_x.transform(self.X_test.values)
-        
+
         self.y_train_scaled = self.scaler_y.fit_transform(self.y_train.reshape(-1, 1))
         self.y_test_scaled = self.scaler_y.transform(self.y_test.reshape(-1, 1))
-    
-    # This is the method where the previous two methods will run, we only need to call this
-    # def data_transformation(self) -> pd.DataFrame:
-    #     df_final = self.scale_data()
-        
-    #     save_dataframe_to_csv(
-    #         df_final, "./data/clean/transformed.csv"
-    #     )
-    #     print('Data is saved')
-    #     return df_final
